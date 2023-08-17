@@ -27,7 +27,7 @@ def get_text_messages(message):
         return
     countInt = int(count)
     if countInt > 100000:
-        bot.send_message(message.from_user.id, "Слишком большое количество: лучше поменьше (до 100000)")
+        bot.send_message(message.from_user.id, "Слишком большое количество: лучше поменьше (до 100000 включительно)")
         return
     if countInt <= 0:
         bot.send_message(message.from_user.id, "Количество должно быть положительным")
