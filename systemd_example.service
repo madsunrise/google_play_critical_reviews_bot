@@ -1,0 +1,10 @@
+[Unit]
+Description=Google Play Critical Reviews bot
+After=multi-user.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/root/google_play_review_scrapper/venv/bin/python3 /root/google_play_review_scrapper/main.py
+[Install]
+WantedBy=multi-user.target
