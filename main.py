@@ -6,7 +6,7 @@ bot = telebot.TeleBot('BOT_TOKEN')
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    msg = "Укажи package name приложения, язык ('ru', 'en' либо другой) и количество отзывов. Количество может варьироваться, чем оно больше, тем дольше ждать. Какая верхяя граница – неизвестно. " \
+    msg = "Укажи package name приложения, язык ('ru', 'en' либо другой) и количество отзывов. Количество может варьироваться, чем оно больше, тем дольше ждать. Какая верхняя граница – неизвестно. " \
           "Будут выгружены только отрицательные отзывы (с одной звездой), от самых свежих к более старым. Примеры сообщений:"
     bot.send_message(message.from_user.id, msg)
     bot.send_message(message.from_user.id, "ru.mail.mailapp ru 10000")
@@ -26,10 +26,15 @@ def get_text_messages(message):
         return
     bot.send_message(message.from_user.id, f'Приложение: {app}, язык: {lang}, кол-во отзывов: {count}. Загрузка...')
     uniqueId = message.date
-    file = fetch_reviews(app=app, lang=lang, count=int(count), uniqueId=uniqueId)
-    bot.send_message(message.from_user.id, f'Отзывы для {app} загружены:')
-    bot.send_document(message.from_user.id, open(file.name, 'rb'))
-    file.close()
+    try:
+        file = fetch_reviews(app=app, lang=lang, count=int(count), uniqueId=uniqueId)
+        bot.send_message(message.from_user.id, f'Отзывы для {app} загружены:')
+        bot.send_document(message.from_user.id, open(file.name, 'rb'))
+        file.close()
+    except Exception as e:
+        error_message = 'Exception occurred: ' + str(e)
+        print(error_message)
+        bot.send_message(message.from_user.id, error_message)
 
 
 def fetch_reviews(app, lang, count, uniqueId):
