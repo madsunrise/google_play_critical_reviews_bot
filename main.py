@@ -32,7 +32,8 @@ def get_text_messages(message):
     if countInt <= 0:
         bot.send_message(message.from_user.id, "Количество должно быть положительным")
         return
-    bot.send_message(message.from_user.id, f'Приложение: {app}, язык: {lang}, кол-во отзывов: {count}. Загрузка...')
+    wait_msg = f'Приложение: {app}, язык: {lang}, кол-во отзывов: {count}. Загрузка...\n\nОжидание составит до 5 минут.'
+    bot.send_message(message.from_user.id, wait_msg)
     uniqueId = message.date
     try:
         file = fetch_reviews(app=app, lang=lang, count=countInt, uniqueId=uniqueId)
