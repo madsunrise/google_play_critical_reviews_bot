@@ -145,7 +145,7 @@ def fetch_reviews_app_store(app, country, uniqueId):
     mapped = []
     for review in bad_reviews:
         username = review['author_name']
-        version = review['im_version']
+        version = 'version ' + review['im_version']
         review_title = review['title']
         review_text = review['content']
         review = construct_review(username, version, review_title + '\n' + review_text)
