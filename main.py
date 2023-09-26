@@ -74,6 +74,10 @@ def process_request(app, lang, count, message, platform):
         elif platform == Platform.APPLE:
             file = fetch_reviews_app_store(app=app, country=lang, uniqueId=uniqueId)
 
+        if file is None:
+            bot.send_message(message.from_user.id, f'Отрицательные отзывы для {app} не обнаружены.')
+            return
+
         bot.send_message(message.from_user.id, f'Отзывы для {app} загружены:')
         bot.send_document(message.from_user.id, open(file.name, 'rb'))
         file.close()
@@ -102,6 +106,11 @@ def fetch_reviews_google_play(app, lang, count, uniqueId):
         review = construct_review(username, date, review_text)
         if review is not None:
             mapped.append(review)
+
+    if not mapped:
+        print('No reviews found')
+        return None
+
     print(f'Mapped list size: {len(mapped)}')
     joined = "\n\n".join(mapped)
     file_name = f'google_{app}_{lang}_{uniqueId}.txt'
@@ -142,6 +151,10 @@ def fetch_reviews_app_store(app, country, uniqueId):
         review = construct_review(username, version, review_title + '\n' + review_text)
         if review is not None:
             mapped.append(review)
+
+    if not mapped:
+        print('No reviews found')
+        return None
 
     print(f'Mapped list size: {len(mapped)}')
     joined = "\n\n".join(mapped)
