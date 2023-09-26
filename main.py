@@ -6,8 +6,7 @@ from google_play_scraper import reviews, Sort
 from get_app_store_reviews import get_and_collect_reviews
 
 bot = telebot.TeleBot('BOT_TOKEN')
-CACHE_ANDROID = '/root/google_play_review_scrapper/cache_android'
-CACHE_IOS = '/root/google_play_review_scrapper/cache_ios'
+CACHE_FOLDER = '/root/google_play_review_scrapper/cache'
 
 
 @bot.message_handler(commands=['start'])
@@ -105,8 +104,8 @@ def fetch_reviews_google_play(app, lang, count, uniqueId):
             mapped.append(review)
     print(f'Mapped list size: {len(mapped)}')
     joined = "\n\n".join(mapped)
-    file_name = f'{app}_{lang}_{uniqueId}.txt'
-    temp = open(f'{CACHE_ANDROID}/{file_name}', "w")
+    file_name = f'google_{app}_{lang}_{uniqueId}.txt'
+    temp = open(f'{CACHE_FOLDER}/{file_name}', "w")
     temp.write(joined)
     temp.flush()
     return temp
@@ -146,8 +145,8 @@ def fetch_reviews_app_store(app, country, uniqueId):
 
     print(f'Mapped list size: {len(mapped)}')
     joined = "\n\n".join(mapped)
-    file_name = f'{app}_{country}_{uniqueId}.txt'
-    temp = open(f'{CACHE_IOS}/{file_name}', "w")
+    file_name = f'apple_{app}_{country}_{uniqueId}.txt'
+    temp = open(f'{CACHE_FOLDER}/{file_name}', "w")
     temp.write(joined)
     temp.flush()
     return temp
